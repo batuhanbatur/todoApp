@@ -15,7 +15,6 @@ function reducer(todos, action){
     case ACTIONS.ADD_TODO:
       const foundDuplicate = todos.some(todo => todo.name === action.payload.name)
       if(foundDuplicate){
-        alert('HELLO BABO')
       }
       else if (action.payload.name.length === 0){
       }

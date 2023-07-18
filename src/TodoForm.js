@@ -1,7 +1,9 @@
 import React from 'react'
-import { useState, useReducer} from 'react'
+import { useState, useReducer, useEffect } from 'react'
 import { Input } from '@chakra-ui/react'
 import TodoButtons from './TodoButtons'
+import { Button } from '@chakra-ui/react'
+
 
 
 export const ACTIONS = {
@@ -33,25 +35,28 @@ function reducer(todos, action){
       return todos.filter(todo => todo.id !== action.payload.id)
     default:
       return todos
-    case ACTIONS.EDIT_TODO:
-      return todos.map(todo => {
-        if (todo.id === action.payload.id){
-          return {...todo, isEditing: !todo.isEditing}
-        }
-      else{
-        return todo;
-      }
-      })
+      case ACTIONS.EDIT_TODO:
+        return todos.map(todo => {
+          if (todo.id === action.payload.id){
+            return {...todo, isEditing: !todo.isEditing};
+          }
+          return todo;
+        })
   }
 }
+
+
 
 function newTodo(name){
   return {id: Date.now(), complete: false, name: name , duplicate: false, isEditing: false}
 }
 
+
+
 function TodoForm() {
   const [name, setName] = useState('')
   const [todos, dispatch] = useReducer(reducer, [])
+
 
 
   const handleSubmit = e => {
@@ -69,9 +74,9 @@ console.log(todos)
       <form onSubmit={handleSubmit}>
         <Input htmlSize={4} width='200px' className='todo-input' type="text" value={name} onChange={e => setName(e.target.value)} />
       </form>
-        <div>
+        <div className="todo-buttons">
           {todos.map(todo => {
-            return <TodoButtons key={todo.id} todo={todo} dispatch={dispatch} />
+            return <TodoButtons key={todo.id} todo={todo} dispatch={dispatch} name={name} setName={setName} handleSubmit={handleSubmit} />
           })}
         </div>
       </div>

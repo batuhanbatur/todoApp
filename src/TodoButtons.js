@@ -1,8 +1,7 @@
-import React from 'react'
-import { ACTIONS } from './TodoForm'
-import { Button } from '@chakra-ui/react'
-import { useState }  from 'react'
-
+import React from "react";
+import { ACTIONS } from "./TodoForm";
+import { Button } from "@chakra-ui/react";
+import { useState } from "react";
 
 function TodoButtons({ todo, dispatch }) {
   const [edit, setEdit] = useState(false);
@@ -14,23 +13,47 @@ function TodoButtons({ todo, dispatch }) {
   };
 
   const handleSave = () => {
-    dispatch({ type: ACTIONS.EDIT_TODO, payload: { id: todo.id, name: editedName } });
+    dispatch({
+      type: ACTIONS.EDIT_TODO,
+      payload: { id: todo.id, name: editedName },
+    });
     setEdit(false);
   };
 
   return (
     <div>
-      <span style={{ color: todo.complete ? "#AAA" : "#000", textDecoration: todo.complete ? "line-through" : "none" }}>
+      <span
+        style={{
+          color: todo.complete ? "#AAA" : "#000",
+          textDecoration: todo.complete ? "line-through" : "none",
+        }}
+      >
         {edit ? (
-          <input type="text" value={editedName} onChange={(e) => setEditedName(e.target.value)} />
+          <input
+            type="text"
+            value={editedName}
+            onChange={(e) => setEditedName(e.target.value)}
+          />
         ) : (
           todo.name
         )}
       </span>
-      <Button size="xs" colorScheme="blue" onClick={() => dispatch({ type: ACTIONS.TOGGLE_TODO, payload: { id: todo.id } })}>
+      <Button
+        size="xs"
+        colorScheme="blue"
+        onClick={() =>
+          dispatch({ type: ACTIONS.TOGGLE_TODO, payload: { id: todo.id } })
+        }
+      >
         Toggle
       </Button>
-      <Button size="xs" colorScheme="blue" onClick={() => dispatch({ type: ACTIONS.DELETE_TODO, payload: { id: todo.id } })}>
+      <Button
+        size="xs"
+        colorScheme="blue"
+        onClick={() =>
+          dispatch({ type: ACTIONS.DELETE_TODO, payload: { id: todo.id } })
+        }
+      >
         Delete
       </Button>
       {edit ? (
@@ -46,5 +69,4 @@ function TodoButtons({ todo, dispatch }) {
   );
 }
 
-export default TodoButtons
-
+export default TodoButtons;

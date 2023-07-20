@@ -1,87 +1,101 @@
-import React from 'react'
-import { useState, useReducer, useEffect } from 'react'
-import { Input } from '@chakra-ui/react'
-import TodoButtons from './TodoButtons'
-import { Button } from '@chakra-ui/react'
-
-
+import React from "react";
+import { useState, useReducer, useEffect } from "react";
+import { Input } from "@chakra-ui/react";
+import TodoButtons from "./TodoButtons";
+import { Button } from "@chakra-ui/react";
 
 export const ACTIONS = {
-  ADD_TODO: 'add-todo',
-  TOGGLE_TODO: 'toggle-todo',
-  DELETE_TODO: 'delete-todo',
-  EDIT_TODO: 'edit-todo'
-}
+  ADD_TODO: "add-todo",
+  TOGGLE_TODO: "toggle-todo",
+  DELETE_TODO: "delete-todo",
+  EDIT_TODO: "edit-todo",
+};
 
-function reducer(todos, action){
-  switch (action.type){
+function reducer(todos, action) {
+  switch (action.type) {
     case ACTIONS.ADD_TODO:
-      const foundDuplicate = todos.some(todo => todo.name === action.payload.name)
-      if (foundDuplicate){
-       }
-      else if (action.payload.name.length === 0){
+      const foundDuplicate = todos.some(
+        (todo) => todo.name === action.payload.name,
+      );
+      if (foundDuplicate) {
+      } else if (action.payload.name.length === 0) {
+      } else {
+        return [...todos, newTodo(action.payload.name)];
       }
-      else {
-        return [...todos, newTodo(action.payload.name)]
-        }
     case ACTIONS.TOGGLE_TODO:
-      return todos.map(todo => {
-        if (todo.id === action.payload.id){
-          return {...todo, complete: !todo.complete};
+      return todos.map((todo) => {
+        if (todo.id === action.payload.id) {
+          return { ...todo, complete: !todo.complete };
         }
         return todo;
-      })
+      });
     case ACTIONS.DELETE_TODO:
-      return todos.filter(todo => todo.id !== action.payload.id)
+      return todos.filter((todo) => todo.id !== action.payload.id);
     default:
-      return todos
-      case ACTIONS.EDIT_TODO:
-        return todos.map(todo => {
-          if (todo.id === action.payload.id){
-            return {...todo, isEditing: !todo.isEditing};
-          }
-          return todo;
-        })
+      return todos;
+    case ACTIONS.EDIT_TODO:
+      return todos.map((todo) => {
+        if (todo.id === action.payload.id) {
+          return { ...todo, isEditing: !todo.isEditing };
+        }
+        return todo;
+      });
   }
 }
 
-
-
-function newTodo(name){
-  return {id: Date.now(), complete: false, name: name , duplicate: false, isEditing: false}
+function newTodo(name) {
+  return {
+    id: Date.now(),
+    complete: false,
+    name: name,
+    duplicate: false,
+    isEditing: false,
+  };
 }
-
-
 
 function TodoForm() {
-  const [name, setName] = useState('')
-  const [todos, dispatch] = useReducer(reducer, [])
+  const [name, setName] = useState("");
+  const [todos, dispatch] = useReducer(reducer, []);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch({ type: ACTIONS.ADD_TODO, payload: { name: name } });
+    setName("");
+  };
 
-
-  const handleSubmit = e => {
-    e.preventDefault()
-    dispatch({type: ACTIONS.ADD_TODO, payload: {name: name}})
-    setName('')
-  }
-
-console.log(todos)
+  console.log(todos);
 
   return (
     <>
       <div className="todo-container">
-      Todo App
-      <form onSubmit={handleSubmit}>
-        <Input htmlSize={4} width='200px' className='todo-input' type="text" value={name} onChange={e => setName(e.target.value)} />
-      </form>
+        Todo App
+        <form onSubmit={handleSubmit}>
+          <Input
+            htmlSize={4}
+            width="200px"
+            className="todo-input"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </form>
         <div className="todo-buttons">
-          {todos.map(todo => {
-            return <TodoButtons key={todo.id} todo={todo} dispatch={dispatch} name={name} setName={setName} handleSubmit={handleSubmit} />
+          {todos.map((todo) => {
+            return (
+              <TodoButtons
+                key={todo.id}
+                todo={todo}
+                dispatch={dispatch}
+                name={name}
+                setName={setName}
+                handleSubmit={handleSubmit}
+              />
+            );
           })}
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default TodoForm
+export default TodoForm;

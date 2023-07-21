@@ -11,6 +11,7 @@ export const ACTIONS = {
   EDIT_TODO: "edit-todo",
 };
 
+
 function reducer(todos, action) {
   switch (action.type) {
     case ACTIONS.ADD_TODO:
@@ -36,12 +37,15 @@ function reducer(todos, action) {
     case ACTIONS.EDIT_TODO:
       return todos.map((todo) => {
         if (todo.id === action.payload.id) {
-          return { ...todo, isEditing: !todo.isEditing };
+          return {...todo, isEditing: !todo.isEditing};
         }
         return todo;
       });
+
   }
 }
+
+
 
 function newTodo(name) {
   return {
@@ -57,13 +61,16 @@ function TodoForm() {
   const [name, setName] = useState("");
   const [todos, dispatch] = useReducer(reducer, []);
 
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch({ type: ACTIONS.ADD_TODO, payload: { name: name } });
     setName("");
   };
 
-  console.log(todos);
+
+  console.log(todos)
 
   return (
     <>
@@ -86,9 +93,7 @@ function TodoForm() {
                 key={todo.id}
                 todo={todo}
                 dispatch={dispatch}
-                name={name}
-                setName={setName}
-                handleSubmit={handleSubmit}
+                newTodo={newTodo}
               />
             );
           })}

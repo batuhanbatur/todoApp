@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState, useReducer, useEffect } from "react";
 import { Input } from "@chakra-ui/react";
 import TodoButtons from "./TodoButtons";
 import { Button } from "@chakra-ui/react";
 
+
 export const ACTIONS = {
   ADD_TODO: "add-todo",
   TOGGLE_TODO: "toggle-todo",
   DELETE_TODO: "delete-todo",
-  EDIT_TODO: "edit-todo",
+  TOGGLE_EDIT_TODO: "edit-todo",
+  SAVE_EDIT_TODO: 'save-edit-todo',
+  BLOCK_NULL_TODO: 'block-null-todo'
 };
 
 
@@ -23,6 +26,8 @@ function reducer(todos, action) {
       } else {
         return [...todos, newTodo(action.payload.name)];
       }
+
+
     case ACTIONS.TOGGLE_TODO:
       return todos.map((todo) => {
         if (todo.id === action.payload.id) {
@@ -34,14 +39,23 @@ function reducer(todos, action) {
       return todos.filter((todo) => todo.id !== action.payload.id);
     default:
       return todos;
-    case ACTIONS.EDIT_TODO:
+    case ACTIONS.TOGGLE_EDIT_TODO:
       return todos.map((todo) => {
         if (todo.id === action.payload.id) {
           return {...todo, isEditing: !todo.isEditing};
         }
         return todo;
       });
+        case ACTIONS.SAVE_EDIT_TODO:
+          return todos.map((todo) => {
+            if (todo.id === action.payload.id) {
+              return { ...todo, name: action.payload.editedName, isEditing: !todo.isEditing };
+            }
+            return todo;
+          });
 
+        
+        
   }
 }
 
@@ -94,6 +108,7 @@ function TodoForm() {
                 todo={todo}
                 dispatch={dispatch}
                 newTodo={newTodo}
+                name={name}
               />
             );
           })}

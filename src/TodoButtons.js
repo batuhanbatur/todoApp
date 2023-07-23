@@ -2,7 +2,7 @@
     import { ACTIONS } from "./TodoForm";
     import { Button } from "@chakra-ui/react";
     import { useState, useReducer } from "react";
-
+    import { Input } from "@chakra-ui/react";
 
 
     export default function TodoButtons({ todo, dispatch }){
@@ -35,7 +35,9 @@
         <div>
             
               <form onSubmit={handleEdit}> 
-              <input
+              <Input
+              htmlSize={2}
+              width="150px"
               type="text"
               value={editedName}
               onChange={e => setEditedName(e.target.value)}

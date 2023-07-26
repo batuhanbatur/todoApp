@@ -65,7 +65,7 @@ export default function TodoButtons({ todo, dispatch }) {
             <UnlockIcon />
           </Button>
         </div>
-      ) : todo.name === editedName ? (
+      ) : todo.name === editedName || editedName.length == 0 ? (
         <div>
           <form onSubmit={handleEdit}>
             <Input

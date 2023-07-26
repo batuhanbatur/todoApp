@@ -32,27 +32,27 @@ export const ACTIONS = {
 
 function reducer(todos, action) {
   switch (action.type) {
-    case ACTIONS.ADD_TODO:
+    case ACTIONS.ADD_TODO: //Action for adding todo.
       return [...todos, newTodo(action.payload.name)];
-    case ACTIONS.TOGGLE_TODO:
+    case ACTIONS.TOGGLE_TODO: //Action for toggling a todo as completed.
       return todos.map((todo) => {
         if (todo.id === action.payload.id) {
           return { ...todo, complete: !todo.complete };
         }
         return todo;
       });
-    case ACTIONS.DELETE_TODO:
+    case ACTIONS.DELETE_TODO: //Action for removing todo from the list.
       return todos.filter((todo) => todo.id !== action.payload.id);
     default:
       return todos;
-    case ACTIONS.TOGGLE_EDIT_TODO:
+    case ACTIONS.TOGGLE_EDIT_TODO: // Action for changing the status of todo as editable.
       return todos.map((todo) => {
         if (todo.id === action.payload.id) {
           return { ...todo, isEditing: !todo.isEditing };
         }
         return todo;
       });
-    case ACTIONS.SAVE_EDIT_TODO:
+    case ACTIONS.SAVE_EDIT_TODO: // Action for saving the todo which is being edited.
       return todos.map((todo) => {
         if (todo.id === action.payload.id) {
           return {
@@ -64,7 +64,7 @@ function reducer(todos, action) {
         return todo;
       });
 
-    case ACTIONS.CANCEL_EDIT:
+    case ACTIONS.CANCEL_EDIT: // Action for cancelling edit if no changes has been made.
       return todos.map((todo) => {
         if (todo.id === action.payload.id) {
           return { ...todo, name: todo.name, isEditing: !todo.isEditing };
@@ -90,6 +90,7 @@ function TodoForm() {
   const [showDuplicateAlert, setShowDuplicateAlert] = useState(false);
   const [duplicatedName, setDuplicatedName] = useState("");
   const [alertStatus, setAlertStatus] = useState(false);
+ 
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -101,33 +102,33 @@ function TodoForm() {
       setAlertStatus(true);
     } else {
       dispatch({ type: ACTIONS.ADD_TODO, payload: { name: name } });
+       
       setAlertStatus(false);
     }
     setName("");
   };
 
   const handleAddDuplicate = () => {
+    setAlertStatus(false);
     dispatch({ type: ACTIONS.ADD_TODO, payload: { name: duplicatedName } });
     setShowDuplicateAlert(false);
     setName("");
     setDuplicatedName("");
-    setAlertStatus(false);
   };
 
   console.log(todos);
 
   return (
     <>
-      {alertStatus && (
+      {alertStatus && ( // Show a warning alert if the user tries to submit an empty todo
         <Alert status="warning">
           <AlertIcon />
-          <AlertTitle>Please add a todo.</AlertTitle>
+          <AlertTitle>Start typing to add a new todo.</AlertTitle>
         </Alert>
       )}
-
       <div className="todo-container">
         Todo App
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}> 
           <Input
             htmlSize={4}
             width="200px"
@@ -144,8 +145,6 @@ function TodoForm() {
                 key={todo.id}
                 todo={todo}
                 dispatch={dispatch}
-                newTodo={newTodo}
-                name={name}
               />
             );
           })}

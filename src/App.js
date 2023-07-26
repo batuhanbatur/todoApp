@@ -8,6 +8,7 @@ export default function App() {
     <ChakraProvider>
       <div className="App">
         <TodoForm />
+        <p>hello</p>
       </div>
     </ChakraProvider>
   );

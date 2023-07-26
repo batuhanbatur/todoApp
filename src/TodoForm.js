@@ -3,6 +3,16 @@ import { useState, useReducer, useEffect } from "react";
 import { Input } from "@chakra-ui/react";
 import TodoButtons from "./TodoButtons";
 import { Button } from "@chakra-ui/react";
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  AlertDialogCloseButton,
+} from '@chakra-ui/react';
+import { useDisclosure } from '@chakra-ui/react'
 
 
 export const ACTIONS = {
@@ -15,7 +25,10 @@ export const ACTIONS = {
 };
 
 
+
+
 function reducer(todos, action) {
+
   switch (action.type) {
     case ACTIONS.ADD_TODO:
       const foundDuplicate = todos.some(
@@ -54,8 +67,8 @@ function reducer(todos, action) {
             return todo;
           });
 
-        
-        
+
+
   }
 }
 

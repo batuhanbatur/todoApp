@@ -3,14 +3,23 @@ import { ACTIONS } from "./TodoForm";
 import { Button } from "@chakra-ui/react";
 import { useState, useReducer } from "react";
 import { Input } from "@chakra-ui/react";
-import { DeleteIcon, UnlockIcon, WarningIcon, NotAllowedIcon, CheckIcon } from '@chakra-ui/icons'
+import {
+  DeleteIcon,
+  UnlockIcon,
+  WarningIcon,
+  NotAllowedIcon,
+  CheckIcon,
+} from "@chakra-ui/icons";
 
 export default function TodoButtons({ todo, dispatch }) {
   const [editedName, setEditedName] = useState(todo.name);
 
   const handleEdit = (e) => {
     e.preventDefault();
-    dispatch({ type: ACTIONS.SAVE_EDIT_TODO, payload: { id: todo.id, editedName: editedName } });
+    dispatch({
+      type: ACTIONS.SAVE_EDIT_TODO,
+      payload: { id: todo.id, editedName: editedName },
+    });
   };
 
   return (
@@ -28,21 +37,30 @@ export default function TodoButtons({ todo, dispatch }) {
           <Button
             size="xs"
             colorScheme="blue"
-            onClick={() => dispatch({ type: ACTIONS.TOGGLE_TODO, payload: { id: todo.id } })}
+            onClick={() =>
+              dispatch({ type: ACTIONS.TOGGLE_TODO, payload: { id: todo.id } })
+            }
           >
             <CheckIcon />
           </Button>
           <Button
             size="xs"
             colorScheme="blue"
-            onClick={() => dispatch({ type: ACTIONS.DELETE_TODO, payload: { id: todo.id } })}
+            onClick={() =>
+              dispatch({ type: ACTIONS.DELETE_TODO, payload: { id: todo.id } })
+            }
           >
             <DeleteIcon />
           </Button>
           <Button
             size="xs"
             colorScheme="blue"
-            onClick={() => dispatch({ type: ACTIONS.TOGGLE_EDIT_TODO, payload: { id: todo.id } })}
+            onClick={() =>
+              dispatch({
+                type: ACTIONS.TOGGLE_EDIT_TODO,
+                payload: { id: todo.id },
+              })
+            }
           >
             <UnlockIcon />
           </Button>
@@ -61,7 +79,12 @@ export default function TodoButtons({ todo, dispatch }) {
             <Button
               size="xs"
               colorScheme="blue"
-              onClick={() => dispatch({ type: ACTIONS.CANCEL_EDIT, payload: { id: todo.id } })}
+              onClick={() =>
+                dispatch({
+                  type: ACTIONS.CANCEL_EDIT,
+                  payload: { id: todo.id },
+                })
+              }
             >
               Cancel
             </Button>

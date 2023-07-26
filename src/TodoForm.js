@@ -14,6 +14,12 @@ import {
 } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/react'
 import { PhoneIcon, AddIcon, WarningIcon } from '@chakra-ui/icons'
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+} from '@chakra-ui/react'
 
 
 export const ACTIONS = {
@@ -23,17 +29,13 @@ export const ACTIONS = {
   TOGGLE_EDIT_TODO: "edit-todo",
   SAVE_EDIT_TODO: 'save-edit-todo',
   CANCEL_EDIT: 'cancel-edit'
-};
+}; // Global Actions
 
 
 function reducer(todos, action) {
   switch (action.type) {
     case ACTIONS.ADD_TODO:
-      
         return [...todos, newTodo(action.payload.name)];
-      
-
-
     case ACTIONS.TOGGLE_TODO:
       return todos.map((todo) => {
         if (todo.id === action.payload.id) {
@@ -86,35 +88,45 @@ function newTodo(name) {
 function TodoForm() {
   const [name, setName] = useState("");
   const [todos, dispatch] = useReducer(reducer, []);
-  const [showDuplicateAlert, setShowDuplicateAlert] = useState(false); // New state variable
-  const [duplicatedName, setDuplicatedName] = useState(""); // New state variable
-
+  const [showDuplicateAlert, setShowDuplicateAlert] = useState(false);
+  const [duplicatedName, setDuplicatedName] = useState("");
+  const [alertStatus, setAlertStatus] = useState(false)
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const foundDuplicate = todos.some((todo) => todo.name === name);
     if (foundDuplicate) {
       setDuplicatedName(name);
-      setShowDuplicateAlert(true); // Show the Duplicate alert
+      setShowDuplicateAlert(true); 
     } else if (name.length === 0) {
-      // Handle the case when input is empty
+      setAlertStatus(true)
+
     } else {
       dispatch({ type: ACTIONS.ADD_TODO, payload: { name: name } });
+      setAlertStatus(false)
     }
     setName("");
   };
 
   const handleAddDuplicate = () => {
     dispatch({ type: ACTIONS.ADD_TODO, payload: { name: duplicatedName } });
-    setShowDuplicateAlert(false); // Close the Duplicate alert
+    setShowDuplicateAlert(false);
     setName("")
     setDuplicatedName("")
+    setAlertStatus(false)
   };
 
   console.log(todos)
 
   return (
     <>
+      {alertStatus && (
+          <Alert status='warning'>
+          <AlertIcon />
+          <AlertTitle>Please add a todo.</AlertTitle>
+        </Alert>
+        )}
+
       <div className="todo-container">
         Todo App
         <form onSubmit={handleSubmit}>
@@ -159,8 +171,6 @@ function TodoForm() {
           </AlertDialogOverlay>
         </AlertDialog>
       )}
-
-
 
         </div>
       </div>

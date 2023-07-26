@@ -1,6 +1,6 @@
 import * as React from "react";
 import TodoForm from "./TodoForm";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, StatDownArrow } from "@chakra-ui/react";
 import "./App.css";
 
 export default function App() {

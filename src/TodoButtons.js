@@ -3,6 +3,7 @@ import { ACTIONS } from "./TodoForm";
 import { Button } from "@chakra-ui/react";
 import { useState, useReducer } from "react";
 import { Input } from "@chakra-ui/react";
+import { DeleteIcon, UnlockIcon, WarningIcon, NotAllowedIcon, CheckIcon } from '@chakra-ui/icons'
 
 export default function TodoButtons({ todo, dispatch }) {
   const [editedName, setEditedName] = useState(todo.name);
@@ -29,21 +30,21 @@ export default function TodoButtons({ todo, dispatch }) {
             colorScheme="blue"
             onClick={() => dispatch({ type: ACTIONS.TOGGLE_TODO, payload: { id: todo.id } })}
           >
-            Toggle
+            <CheckIcon />
           </Button>
           <Button
             size="xs"
             colorScheme="blue"
             onClick={() => dispatch({ type: ACTIONS.DELETE_TODO, payload: { id: todo.id } })}
           >
-            Delete
+            <DeleteIcon />
           </Button>
           <Button
             size="xs"
             colorScheme="blue"
             onClick={() => dispatch({ type: ACTIONS.TOGGLE_EDIT_TODO, payload: { id: todo.id } })}
           >
-            Edit
+            <UnlockIcon />
           </Button>
         </div>
       ) : todo.name === editedName ? (

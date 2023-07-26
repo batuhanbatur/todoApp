@@ -13,6 +13,7 @@ import {
   AlertDialogCloseButton,
 } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/react'
+import { PhoneIcon, AddIcon, WarningIcon } from '@chakra-ui/icons'
 
 
 export const ACTIONS = {
@@ -24,57 +25,13 @@ export const ACTIONS = {
   CANCEL_EDIT: 'cancel-edit'
 };
 
-/* function Duplicate() {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const cancelRef = React.useRef()
-
-return (
-  <>
-  <AlertDialog
-        isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-              Duplicate todo located!
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              You already have this todo in your list.
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
-                Cancel
-              </Button>
-              <Button colorScheme='red' onClick={onClose} ml={3}>
-                Add
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-    </>
-)
-
-}
-*/
 
 function reducer(todos, action) {
-
   switch (action.type) {
     case ACTIONS.ADD_TODO:
-      const foundDuplicate = todos.some(
-        (todo) => todo.name === action.payload.name,
-      );
-      if (foundDuplicate) {
-        alert('ohayo')
-      } else if (action.payload.name.length === 0) {
-      } else {
+      
         return [...todos, newTodo(action.payload.name)];
-      }
+      
 
 
     case ACTIONS.TOGGLE_TODO:
@@ -129,14 +86,30 @@ function newTodo(name) {
 function TodoForm() {
   const [name, setName] = useState("");
   const [todos, dispatch] = useReducer(reducer, []);
+  const [showDuplicateAlert, setShowDuplicateAlert] = useState(false); // New state variable
+  const [duplicatedName, setDuplicatedName] = useState(""); // New state variable
 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch({ type: ACTIONS.ADD_TODO, payload: { name: name } });
+    const foundDuplicate = todos.some((todo) => todo.name === name);
+    if (foundDuplicate) {
+      setDuplicatedName(name);
+      setShowDuplicateAlert(true); // Show the Duplicate alert
+    } else if (name.length === 0) {
+      // Handle the case when input is empty
+    } else {
+      dispatch({ type: ACTIONS.ADD_TODO, payload: { name: name } });
+    }
     setName("");
   };
 
+  const handleAddDuplicate = () => {
+    dispatch({ type: ACTIONS.ADD_TODO, payload: { name: duplicatedName } });
+    setShowDuplicateAlert(false); // Close the Duplicate alert
+    setName("")
+    setDuplicatedName("")
+  };
 
   console.log(todos)
 
@@ -166,6 +139,29 @@ function TodoForm() {
               />
             );
           })}
+          {showDuplicateAlert && (
+        <AlertDialog isOpen={true} onClose={() => setShowDuplicateAlert(false)}>
+          <AlertDialogOverlay>
+            <AlertDialogContent>
+              <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+              You already have this todo in your list.
+              </AlertDialogHeader>
+              <AlertDialogBody>
+              Want to add anyway?
+              </AlertDialogBody>
+              <AlertDialogFooter>
+                <Button colorScheme='red' onClick={handleAddDuplicate} payload={name} ml={3}>
+                  Add</Button>
+                <Button onClick={() => setShowDuplicateAlert(false)}>Cancel
+                </Button>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialogOverlay>
+        </AlertDialog>
+      )}
+
+
+
         </div>
       </div>
     </>

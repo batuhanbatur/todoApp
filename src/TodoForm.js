@@ -21,11 +21,46 @@ export const ACTIONS = {
   DELETE_TODO: "delete-todo",
   TOGGLE_EDIT_TODO: "edit-todo",
   SAVE_EDIT_TODO: 'save-edit-todo',
-  BLOCK_NULL_TODO: 'block-null-todo'
+  CANCEL_EDIT: 'cancel-edit'
 };
 
+/* function Duplicate() {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const cancelRef = React.useRef()
 
+return (
+  <>
+  <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+              Duplicate todo located!
+            </AlertDialogHeader>
 
+            <AlertDialogBody>
+              You already have this todo in your list.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button colorScheme='red' onClick={onClose} ml={3}>
+                Add
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    </>
+)
+
+}
+*/
 
 function reducer(todos, action) {
 
@@ -35,6 +70,7 @@ function reducer(todos, action) {
         (todo) => todo.name === action.payload.name,
       );
       if (foundDuplicate) {
+        alert('ohayo')
       } else if (action.payload.name.length === 0) {
       } else {
         return [...todos, newTodo(action.payload.name)];
@@ -67,7 +103,13 @@ function reducer(todos, action) {
             return todo;
           });
 
-
+        case ACTIONS.CANCEL_EDIT:
+          return todos.map((todo) => {
+            if (todo.id === action.payload.id) {
+              return { ...todo, name: todo.name, isEditing: !todo.isEditing };
+            }
+            return todo;
+          });
 
   }
 }
@@ -87,7 +129,6 @@ function newTodo(name) {
 function TodoForm() {
   const [name, setName] = useState("");
   const [todos, dispatch] = useReducer(reducer, []);
-
 
 
   const handleSubmit = (e) => {

@@ -6,8 +6,6 @@ import { Input } from "@chakra-ui/react";
 import {
   DeleteIcon,
   UnlockIcon,
-  WarningIcon,
-  NotAllowedIcon,
   CheckIcon,
 } from "@chakra-ui/icons";
 

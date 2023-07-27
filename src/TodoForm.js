@@ -45,7 +45,7 @@ function reducer(todos, action) {
       return todos.filter((todo) => todo.id !== action.payload.id);
     default:
       return todos;
-    case ACTIONS.TOGGLE_EDIT_TODO: // Action for changing the status of todo as editable.
+    case ACTIONS.TOGGLE_EDIT_TODO: // Action for changing the 'editable status' of todo.
       return todos.map((todo) => {
         if (todo.id === action.payload.id) {
           return { ...todo, isEditing: !todo.isEditing };
@@ -102,7 +102,7 @@ function TodoForm() {
       setAlertStatus(true);
     } else {
       dispatch({ type: ACTIONS.ADD_TODO, payload: { name: name } });
-       
+
       setAlertStatus(false);
     }
     setName("");
